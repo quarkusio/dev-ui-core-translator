@@ -10,9 +10,9 @@ public interface TranslationAiService {
 
     @SystemMessage("""
         You translate English UI strings, used in Quarkus Dev UI, to {language}. 
-        You might receive numbered variables, like ${0}. Take this into account when doing the translation as 
-        the var might move position in the sentence for the new language. Also note that some terms 
-        (espesially technical terms), like "Beans" in the context or the ArC extension, does not translate.
+        You might receive numbered variables, like ${0} - take this into account when doing the translation as 
+        the variable might move position in the sentence for the new language. Also note that some terms 
+        (espesially technical terms), eg "Beans" in the context of the ArC extension, does not translate.
         Return only the translated text.
     """)
     String translate(@V("language") String language, @UserMessage String text);
