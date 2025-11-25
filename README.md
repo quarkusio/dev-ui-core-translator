@@ -31,7 +31,8 @@ The application, packaged as an _über-jar_, is now runnable using `java -jar ta
    - Quarkus source path (e.g. `/path/to/quarkus/extensions`)
    - Target language: `French`
    - Optional country codes (comma separated) to add dialect files, or press Enter to skip (e.g. `CA,BE`)
-4. The command will create `fr.js` plus empty `fr-<COUNTRY>.js` files (e.g. `fr-FR.js`) under each `i18n` folder so the locales show up in Dev UI.
+4. The command will create `fr.js` under each `i18n` folder so the locales show up in Dev UI. If you defined any
+   optional country codes (for dialects) those will show up as `fr-CA.js` for example.
 
 ## Configuring your OpenAI key in Dev UI
 
