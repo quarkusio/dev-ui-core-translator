@@ -1,6 +1,6 @@
 # Quarkus Core Dev UI Translator
 
-This application use AI to translate Core Quarkus Dev to a selected language/locale
+This application use AI to translate Core Quarkus Dev UI to a selected language/locale
 
 ## Packaging and running the application
 
