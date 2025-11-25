@@ -35,6 +35,7 @@ public class TranslateCommand implements Runnable {
     private static final Pattern ENTRY_PATTERN = Pattern.compile("['\"]([^'\"]+)['\"]\\s*:\\s*['\"]([^'\"]*)['\"]");
     private static final Pattern STR_ENTRY_PATTERN = Pattern.compile("['\"]([^'\"]+)['\"]\\s*:\\s*str`([^`]*)`");
     private static final BufferedReader STDIN = new BufferedReader(new InputStreamReader(System.in));
+    private static final Path MAIN_DEV_UI_I18N = Paths.get("extensions", "devui", "resources", "src", "main", "resources", "dev-ui", "i18n");
 
     @Parameters(paramLabel = "<root>", arity = "0..1", description = "Root directory to scan recursively")
     Path rootDirectory;
@@ -185,10 +186,13 @@ public class TranslateCommand implements Runnable {
         });
         writeTranslationFile(i18nFolder, translatedEntries, languageCode);
 
+        boolean isMainDevUi = i18nFolder.endsWith(MAIN_DEV_UI_I18N);
         Optional<String> defaultCountry = findDefaultCountryCode(languageCode)
                 .map(this::sanitizeCountryCode)
                 .filter(code -> !code.isEmpty());
-        defaultCountry.ifPresent(code -> writeTranslationFile(i18nFolder, Map.of(), languageCode + "-" + code, true));
+        if (isMainDevUi) {
+            defaultCountry.ifPresent(code -> writeTranslationFile(i18nFolder, Map.of(), languageCode + "-" + code, true));
+        }
 
         for (String country : targetCountries) {
             String countryCode = sanitizeCountryCode(country);
@@ -205,7 +209,7 @@ public class TranslateCommand implements Runnable {
                 dialectTranslations.put(key, new TranslationEntry(translated, value.template()));
             });
             Map<String, TranslationEntry> diff = diffTranslations(translatedEntries, dialectTranslations);
-            writeTranslationFile(i18nFolder, diff, languageCode + "-" + countryCode, true);
+            writeTranslationFile(i18nFolder, diff, languageCode + "-" + countryCode, false);
         }
     }
 
