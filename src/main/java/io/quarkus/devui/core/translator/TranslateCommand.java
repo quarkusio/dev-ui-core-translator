@@ -23,6 +23,7 @@ import io.quarkus.arc.Arc;
 import io.quarkus.arc.ManagedContext;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import java.util.UUID;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -51,8 +52,11 @@ public class TranslateCommand implements Runnable {
     @Inject
     TranslationAiService translationAiService;
 
+    private UUID memoryId;
+    
     @Override
     public void run() {
+        memoryId = UUID.randomUUID();
         Path root = resolveRootDirectory();
         targetLanguage = resolveTargetLanguage();
         targetCountries = resolveTargetCountries();
@@ -249,7 +253,7 @@ public class TranslateCommand implements Runnable {
             return "<translation service unavailable>";
         }
         try {
-            return translationAiService.translate(targetLabel, value);
+            return translationAiService.translate(memoryId.toString(), targetLabel, value);
         } catch (Exception e) {
             System.err.printf("Failed to translate \"%s\": %s%n", value, e.getMessage());
             return "<translation error>";
